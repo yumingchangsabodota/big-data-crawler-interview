@@ -14,7 +14,7 @@ class YahooTWSpider(scrapy.Spider):
     def start_requests(self):
 
         for area in self.areas:
-            url = self.base_url.format(area)
+            url = self.base_url.format(area) #將事先存好的新聞類別與新聞root網址結合
             yield scrapy.Request(url, meta={'filename':area})
 
     def parse(self, response):
@@ -22,7 +22,7 @@ class YahooTWSpider(scrapy.Spider):
         path = "//div[@class='listModule']/a"
 
         extracted = []
-
+        #loops 擷取到的新聞並抓取需要內容
         for news in response.xpath(path):
             print(news.extract())
             title = news.xpath(".//div[@class='articleCard-content']/span/text()").get()
@@ -37,4 +37,3 @@ class YahooTWSpider(scrapy.Spider):
                 f.write(str(extracted))
             f.close()
             yield n
-            
